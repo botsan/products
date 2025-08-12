@@ -1,0 +1,28 @@
+/* 色・余白・フォント等の変数 */
+:root {
+  --color-main: #1f6feb;
+  --color-sub: #0ea5e9;
+  --color-accent: #f59e0b;
+  --color-bg: #0b1220;
+  --color-surface: #0f172a;
+  --color-text: #e5e7eb;
+  --color-muted: #94a3b8;
+
+  --ff-sans: system-ui, -apple-system, Segoe UI, Roboto, "Noto Sans JP", Helvetica, Arial;
+  --base-size: 16px;
+  --radius: 16px;
+  --shadow: 0 10px 20px rgba(0,0,0,.25);
+
+  --container: 1120px;
+  --gap: clamp(12px, 2vw, 24px);
+}
+
+html[data-theme="warm"] {
+  --color-main: #b91c1c;
+  --color-sub: #fb923c;
+  --color-accent: #22c55e;
+  --color-bg: #0f0a08;
+  --color-surface: #1b1210;
+  --color-text: #f3f4f6;
+  --color-muted: #a1a1aa;
+}

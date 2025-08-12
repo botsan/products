@@ -1,0 +1,23 @@
+/* 初期は“全Splide”を完全に隠す。マウント後だけ出す */
+.splide:not(.is-initialized),
+.splide:not(.is-initialized) * {
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+.splide.is-initialized,
+.splide.is-initialized * {
+  visibility: visible !important;
+  opacity: 1 !important;
+  pointer-events: auto !important;
+}
+
+/* HTML5 UPの初回フェード演出を止める（残骸対策） */
+#banner:after {
+  transition: none !important;
+  opacity: 0 !important;
+}
+
+/* ul/liの汎用指定が当たらないように（スライド余白ゼロ） */
+#banner .splide__list { margin: 0 !important; }
+#banner .splide__slide { padding: 0 !important; }
