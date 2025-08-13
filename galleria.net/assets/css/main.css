@@ -3962,7 +3962,11 @@ input, select, textarea {
 	}
 
 	/* 背景はCSSから外す＆#bannerを基準にする */
-	#banner { background: none; position: relative; min-height: clamp(420px, 60vh, 900px); }
+	#banner { 
+		background: none; 
+		position: relative; 
+		min-height: clamp(420px, 60vh, 900px); 
+	}
 
 
 /* #banner 全体設定（高さ調整はお好みで） */
@@ -4123,4 +4127,187 @@ input, select, textarea {
 .news-actions { margin-top: .6rem !important;  }
 .news-actions .button.small {
   font-size: .85rem;
+}
+
+
+
+/* ===== Hero Slider (Splide) を #banner 内でレスポンシブに ===== */
+
+/* 旧バナーの背景画像は使わない。固定背景も解除 */
+#banner {
+  background-image: none;
+  background-attachment: scroll;
+}
+
+/* ヒーロー領域の高さは可変：小さすぎず大きすぎない */
+#banner.major .inner > header {
+  width: 100%;
+}
+
+/* スライダー本体 */
+#hero-slider.splide {
+  width: 100%;
+  /* 画面に応じて高さをクランプ。PC: ~70vh / モバイルでも潰れない */
+  height: clamp(320px, 70vh, 720px);
+  /* バナーのテキストシャドウ等を邪魔しないように */
+  position: relative;
+  z-index: 2;
+}
+
+/* Splide のトラック＆リストは高さ継承 */
+#hero-slider .splide__track,
+#hero-slider .splide__list {
+  height: 100%;
+}
+
+/* 各スライドは全面フィット */
+#hero-slider .splide__slide {
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+}
+
+/* レイヤー構造：背景（cover）＋前景（contain）＋コンテンツ */
+#hero-slider .hero-layer {
+  position: relative;
+  height: 100%;
+  width: 100%;
+}
+
+/* 背景画像は全面カバー */
+#hero-slider .hero-layer .bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  /* 低コントラスト背景に寄せるなら軽い暗幕も可 */
+  /* filter: brightness(0.9); */
+}
+
+/* 前景（オーバー画像）は中央に等比配置 */
+#hero-slider .hero-layer .fg {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%,-50%);
+  /* 背景に合わせてはみ出しを抑える。大きすぎる素材は下で縮む */
+  max-width: min(1200px, 95vw);
+  max-height: 90%;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  pointer-events: none;
+}
+
+/* スライド内テキストブロック */
+#hero-slider .hero-layer .content {
+  position: absolute;
+  left: 50%;
+  bottom: clamp(16px, 6vh, 56px);
+  transform: translateX(-50%);
+  text-align: center;
+  padding: 0 1rem;
+  width: min(92vw, 1000px);
+}
+
+/* テキストの視認性を確保（元テーマに寄せる） */
+#hero-slider .hero-layer .content p {
+  font-size: clamp(12px, 1.4vw, 14px);
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  text-shadow: 0 0 5px rgba(42,47,74,.9);
+  margin-bottom: 1rem;
+}
+
+/* CTAボタンの間隔 */
+#hero-slider .hero-layer .actions {
+  justify-content: center;
+}
+
+/* Splide 矢印＆ドットの配置とアクセシビリティ */
+#hero-slider .splide__arrows {
+  position: absolute;
+  inset: 0;
+  pointer-events: none; /* クリックはボタンにだけ通す */
+}
+#hero-slider .splide__arrow {
+  pointer-events: auto;
+  top: 50%;
+  transform: translateY(-50%);
+  opacity: .9;
+}
+#hero-slider .splide__arrow--prev { left: 0.5rem; }
+#hero-slider .splide__arrow--next { right: 0.5rem; }
+
+#hero-slider .splide__pagination {
+  bottom: 0.5rem;
+}
+
+/* モバイル最適化：高さを抑え、前景は少し小さめに */
+@media screen and (max-width: 980px) {
+  #hero-slider.splide {
+    height: clamp(280px, 56vh, 520px);
+  }
+  #hero-slider .hero-layer .fg {
+    max-width: 90vw;
+    max-height: 70%;
+  }
+  #hero-slider .hero-layer .content {
+    bottom: clamp(12px, 4vh, 32px);
+  }
+}
+
+/* 極小端末：テキストを1行／2行に収める */
+@media screen and (max-width: 480px) {
+  #hero-slider.splide {
+    height: clamp(240px, 50vh, 420px);
+  }
+  #hero-slider .hero-layer .content p {
+    letter-spacing: 0.12em;
+    line-height: 1.6;
+  }
+}
+
+/* 旧 #banner のオフセット・重なりを維持（ヘッダー固定との整合） */
+#banner {
+  /* 既存の top/margin-bottom は維持。高さを auto にしても崩れないよう調整 */
+  height: auto;
+  min-height: 0;
+  max-height: none;
+  padding-top: 6em; /* 既存値を活かしつつ、モバイルでは下で上書き */
+}
+
+/* モバイル時の #banner 余白はテーマ準拠に戻す */
+@media screen and (max-width: 736px) {
+  #banner {
+    padding: 5em 0 1em 0;
+    margin-bottom: -2.75em;
+    top: -2.75em;
+  }
+}
+
+/* Splide の遅延読み込み画像が一瞬縮むのを防止 */
+#hero-slider img[data-splide-lazy] {
+  opacity: 0;
+  transition: opacity .3s ease;
+}
+#hero-slider img.is-lazy-loaded {
+  opacity: 1;
+}
+
+
+/* 画像を左右中央＆最下部に固定表示 */
+.menu_footer-logo {
+    display: block;
+    margin: 0 auto;
+    height: 60px; 
+}
+
+.logo-icon {
+    height: 1.5em;
+    width: auto;
+    vertical-align: -0.3em; /* 中央寄せを微調整 */
+    margin-right: 0.4em;
 }
