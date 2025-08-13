@@ -3547,7 +3547,7 @@ input, select, textarea {
 				height: auto;
 				margin-bottom: -2.75em;
 				max-height: none;
-				min-height: 0;
+				min-height: 15em;
 				top: -2.75em;
 			}
 
@@ -3566,7 +3566,7 @@ input, select, textarea {
 
 				#banner.major {
 					height: auto;
-					min-height: 0;
+					min-height: 20em;
 					max-height: none;
 				}
 
@@ -4286,6 +4286,10 @@ input, select, textarea {
     margin-bottom: -2.75em;
     top: -2.75em;
   }
+  /* さすがに表示しきれないので削除 */
+  #hero-slider .hero-layer .content {
+    display: none;
+  }
 }
 
 /* Splide の遅延読み込み画像が一瞬縮むのを防止 */
@@ -4311,3 +4315,5 @@ input, select, textarea {
     vertical-align: -0.3em; /* 中央寄せを微調整 */
     margin-right: 0.4em;
 }
+
+
